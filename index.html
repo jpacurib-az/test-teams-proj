@@ -18,15 +18,13 @@
   <br/>
   <br/>
   <textarea id="RESULT" placeholder="Login Result" rows="5"></textarea>
+  <br/>  
   <br/>
-  <textarea id="TOKEN" placeholder="Token Result" rows="5"></textarea>  
-  <br/>
-  <br/>
-  <textarea id="JS_CODE" placeholder="JS Code" rows="5"></textarea>
+  <textarea id="JS_CODE" placeholder="JS Code" rows="7"></textarea>
   <br/>
   <button onclick="execCode()">Execute Code</button>
   <br/>
-  1.1
+  1.2
 </body>
 
   <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.15/js/adal.min.js" 
@@ -59,16 +57,14 @@
       }
       
       var startUrl = "https://jpacurib-az.github.io/test-teams-proj/403.html?start=" + encodeURIComponent(thisUrl);
+      console.log(startUrl);
 	  
       microsoftTeams.authentication.authenticate({
         url: startUrl,
         width: 800,
         height: 600,
         successCallback: function(result) {          
-                           document.getElementById("RESULT").value = result;
-                           var tokenResult = JSON.parse(result);          
-                           document.getElementById("TOKEN").value = tokenResult;
-                           window.close();
+                           document.getElementById("RESULT").value = result;                                                      
                          },
         failureCallback: function(result) {		  
                            document.getElementById("RESULT").value = result;
