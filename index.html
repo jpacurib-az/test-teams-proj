@@ -24,11 +24,8 @@
   <br/>
   <button onclick="execCode()">Execute Code</button>
   <br/>
-  1.3
+  1.4
 </body>
-
-  <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.15/js/adal.min.js" 
-    integrity="sha384-lIk8T3uMxKqXQVVfFbiw0K/Nq+kt1P3NtGt/pNexiDby2rKU6xnDY8p16gIwKqgI" crossorigin="anonymous"></script>
   
   <script src="https://statics.teams.microsoft.com/sdk/v1.5.2/js/MicrosoftTeams.min.js" crossorigin="anonymous"></script>  
   
@@ -46,6 +43,8 @@
         alert("No URL value");
         return;
       }
+      
+      document.getElementById("RESULT").value = "";
       window.location.href = thisUrl;
     }	
   
@@ -56,6 +55,7 @@
         return;
       }
       
+      document.getElementById("RESULT").value = "";
       var startUrl = "https://jpacurib-az.github.io/test-teams-proj/403.html?start=" + encodeURIComponent(thisUrl);
       console.log(startUrl);
 	  
@@ -82,44 +82,6 @@
         return;
       }
       eval(code);
-    }
-    
-    function getAdalConfig() {
-      var config = {
-        clientId: "66af5ea4-f904-4597-9e96-92eff924ba00",
-        // redirectUri must be in the list of redirect URLs for the Azure AD app
-        redirectUri: "http://localhost:8080/1.0/api/accept-auth",
-        cacheLocation: "localStorage",
-        navigateToLoginRequestUrl: false,
-        extraQueryParameter:  "scope=openid+profile+offline_access+https%3A%2F%2Fgraph.microsoft.com%2F.default&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2F1.0%2Fapi%2Faccept-auth&state=%7B%22requestId%22%3A%22U001-001-002%22%2C%22componentId%22%3A%22json-test-app%22%2C%22userId%22%3A%22jaysonne_pacurib%40azeus.com%22%2C%22redirectUri%22%3A%22https%3A%2F%2Fwww.google.com%3Fq%3D1%22%2C%22consent%22%3Afalse%7D&nonce=ae49dca5-1be6-48ef-9bf6-87a5cef4c910&client_id=66af5ea4-f904-4597-9e96-92eff924ba00&response_mode=query"
-      };      
-      return config;
-    }
-    
-    function adalAuth() {
-      let config = getAdalConfig();
-      let authContext = new AuthenticationContext(config); // from the ADAL.js library
-      // See if there's a cached user and it matches the expected user
-      let user = authContext.getCachedUser();      
-      console.log(user);      
-      
-
-      // In this example we are getting an id token (which ADAL.js returns if we ask for resource = clientId)
-      authContext.acquireToken(config.clientId, function (errDesc, token, err, tokenType) {
-        if (token) {
-          // Make sure ADAL gave us an id token
-          if (tokenType !== authContext.CONSTANTS.ID_TOKEN) {
-            token = authContext.getCachedToken(config.clientId);
-          }
-          showProfileInformation(idToken);
-        } else {
-          console.log("Renewal failed: " + err);
-          // Failed to get the token silently; show the login button
-          //showLoginButton();
-          // You could attempt to launch the login popup here, but in browsers this could be blocked by
-          // a popup blocker, in which case the login attempt will fail with the reason FailedToOpenWindow.
-        }
-      });
     }
 	
   init();
