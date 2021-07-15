@@ -7,11 +7,14 @@
 
 <body>
   Auth End
+  <input type="text" id="REDIRECT_URI" readonly="true" / >
 </body>
 
 <script src="https://statics.teams.microsoft.com/sdk/v1.5.2/js/MicrosoftTeams.min.js" crossorigin="anonymous"></script>  
 <script type="text/javascript">   
+  var url = window.location.href;
+  document.getElementById("REDIRECT_URI").value = url;
   microsoftTeams.initialize();
-  microsoftTeams.authentication.notifySuccess("URL: " + window.location.href);
+  microsoftTeams.authentication.notifySuccess("URL: " + url);
 </script>
 </html>
