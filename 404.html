@@ -13,7 +13,7 @@
     <br/>
     <input type="text" id="END" readonly="true" style="width: 600px;"/ >    
     <br/>
-    1.3
+    1.4
   </form>
 </body>
 
@@ -22,12 +22,13 @@
   microsoftTeams.initialize();
   var url = new URL(window.location.href);
   
-  var start = url.searchParams.get("start");
-  if (start) {  
-    document.getElementById("START").value = start;
-    window.location.href = start;
+  var startUrl = url.searchParams.get("start");
+  if (startUrl) {  
+    document.getElementById("START").value = startUrl;
+    window.location.href = startUrl;
   } 
   
+  // useId gets populated after successful login
   var user = url.searchParams.get("userId");
   if (user) {
     document.getElementById("END").value = url.search;
