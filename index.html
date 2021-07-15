@@ -24,7 +24,7 @@
   <br/>
   <button onclick="execCode()">Execute Code</button>
   <br/>
-  1.2
+  1.3
 </body>
 
   <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.15/js/adal.min.js" 
@@ -63,13 +63,16 @@
         url: startUrl,
         width: 800,
         height: 600,
-        successCallback: function(result) {          
-                           document.getElementById("RESULT").value = result;                                                      
-                         },
-        failureCallback: function(result) {		  
-                           document.getElementById("RESULT").value = result;
-                         }
+        successCallback: function(result) { grabResult(result); },
+        failureCallback: function(result) { grabResult(result); }
       });      
+    }
+    
+    function grabResult(result) {
+      console.log(result);
+      var loginResult = localStorage.getItem("MS_ADAPTER_LOGIN_RESULT");
+      document.getElementById("RESULT").value = loginResult;
+      localStorage.clear("MS_ADAPTER_LOGIN_RESULT");
     }
     
     function execCode() {
