@@ -2,20 +2,35 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>Auth End</title>   
+  <title>Auth Redirect</title>   
 </head>
 
-<body>
-  Auth End
+<body>  
+  Auth Redirect
   <br/>
-  <input type="text" id="REDIRECT_URI" readonly="true" style="width: 600px;"/ >
+  <form>
+    <input type="text" id="START" readonly="true" style="width: 600px;"/ >
+    <br/>
+    <input type="text" id="END" readonly="true" style="width: 600px;"/ >    
+  </form>
 </body>
 
 <script src="https://statics.teams.microsoft.com/sdk/v1.5.2/js/MicrosoftTeams.min.js" crossorigin="anonymous"></script>  
-<script type="text/javascript">   
-  var url = window.location.href;
-  document.getElementById("REDIRECT_URI").value = url;
+<script type="text/javascript">     
   microsoftTeams.initialize();
-  microsoftTeams.authentication.notifySuccess("URL: " + url);
+  var url = new URL(window.location.href);
+  
+  var start = url.searchParams.get("start");
+  if (start) {  
+    document.getElementById("START").value = start;
+    window.location.href = start;
+  } 
+  
+  var user = url.searchParams.get("userId");
+  if (user) {
+    document.getElementById("END").value = url.search;
+    microsoftTeams.authentication.notifySuccess("URL: " + url.search);
+  }  
+  
 </script>
 </html>
