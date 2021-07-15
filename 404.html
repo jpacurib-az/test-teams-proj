@@ -8,4 +8,10 @@
 <body>
   Auth End
 </body>
+
+<script src="https://statics.teams.microsoft.com/sdk/v1.5.2/js/MicrosoftTeams.min.js" crossorigin="anonymous"></script>  
+<script type="text/javascript">   
+  microsoftTeams.initialize();
+  microsoftTeams.authentication.notifySuccess("URL: " + window.location.href);
+</script>
 </html>
