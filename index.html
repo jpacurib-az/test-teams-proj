@@ -19,47 +19,62 @@
   <br/>
   <textarea id="RESULT" placeholder="Login Result" rows="5"></textarea>
   <br/>
-  <textarea id="TOKEN" placeholder="Token Result" rows="5"></textarea>
+  <textarea id="TOKEN" placeholder="Token Result" rows="5"></textarea>  
+  <br/>
+  <br/>
+  <textarea id="JS_CODE" placeholder="JS Code" rows="5"></textarea>
+  <br/>
+  <button onclick="execCode()">Execute Code</button>
 </body>
+
   <script src="https://statics.teams.microsoft.com/sdk/v1.5.2/js/MicrosoftTeams.min.js" crossorigin="anonymous"></script>  
   
   <script type="text/javascript">   
 	
-	function init() {
-	  microsoftTeams.initialize();	
-      var sampleUrl = "https://login.microsoftonline.com/64e0e568-dc64-419f-958f-82e4565a24da/oauth2/v2.0/authorize?scope=openid+profile+offline_access+https%3A%2F%2Fgraph.microsoft.com%2F.default&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2F1.0%2Fapi%2Faccept-auth&state=%7B%22requestId%22%3A%22U001-001-002%22%2C%22componentId%22%3A%22json-test-app%22%2C%22userId%22%3A%22jaysonne_pacurib%40azeus.com%22%2C%22redirectUri%22%3A%22https%3A%2F%2Fwww.google.com%3Fq%3D1%22%2C%22consent%22%3Afalse%7D&nonce=ae49dca5-1be6-48ef-9bf6-87a5cef4c910&client_id=66af5ea4-f904-4597-9e96-92eff924ba00&response_mode=query";	
-	  document.getElementById("LOGIN_URL").value = sampleUrl;
-	}
+    function init() {
+      microsoftTeams.initialize();	
+        var sampleUrl = "https://login.microsoftonline.com/64e0e568-dc64-419f-958f-82e4565a24da/oauth2/v2.0/authorize?scope=openid+profile+offline_access+https%3A%2F%2Fgraph.microsoft.com%2F.default&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2F1.0%2Fapi%2Faccept-auth&state=%7B%22requestId%22%3A%22U001-001-002%22%2C%22componentId%22%3A%22json-test-app%22%2C%22userId%22%3A%22jaysonne_pacurib%40azeus.com%22%2C%22redirectUri%22%3A%22https%3A%2F%2Fwww.google.com%3Fq%3D1%22%2C%22consent%22%3Afalse%7D&nonce=ae49dca5-1be6-48ef-9bf6-87a5cef4c910&client_id=66af5ea4-f904-4597-9e96-92eff924ba00&response_mode=query";	
+      document.getElementById("LOGIN_URL").value = sampleUrl;
+    }
 	
-	function doLoginNormal() {
-	  var thisUrl = document.getElementById("LOGIN_URL").value;
-	  if (!thisUrl) {
-	    alert("No URL value");
-		return;
-	  }
-	  window.location.href = thisUrl;
-	}	
+    function doLoginNormal() {
+      var thisUrl = document.getElementById("LOGIN_URL").value;
+      if (!thisUrl) {
+        alert("No URL value");
+        return;
+      }
+      window.location.href = thisUrl;
+    }	
   
     function doLoginTeamsSdk() {
-	  var thisUrl = document.getElementById("LOGIN_URL").value;
-	  if (!thisUrl) {
-	    alert("No URL value");
-		return;
-	  }
+      var thisUrl = document.getElementById("LOGIN_URL").value;
+      if (!thisUrl) {
+        alert("No URL value");
+        return;
+      }
 	  
       microsoftTeams.authentication.authenticate({
         url: thisUrl,
         width: 800,
         height: 600,
         successCallback: function(result) {          
-		  document.getElementById("RESULT").value = result;
-          var tokenResult = JSON.parse(result);          
-		  document.getElementById("TOKEN").value = tokenResult;
-        },
-		failureCallback: function(result) {		  
-		  document.getElementById("RESULT").value = result;
-		}
+          document.getElementById("RESULT").value = result;
+              var tokenResult = JSON.parse(result);          
+          document.getElementById("TOKEN").value = tokenResult;
+            },
+        failureCallback: function(result) {		  
+          document.getElementById("RESULT").value = result;
+        }
       });      
+    }
+    
+    function execCode() {
+      var code = document.getElementById("JS_CODE").value;
+      if (!code) {
+        alert("No code to execute");
+        return;
+      }
+      eval(code);
     }
 	
 	init();
