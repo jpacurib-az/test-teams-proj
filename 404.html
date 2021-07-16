@@ -28,12 +28,14 @@
     window.location.href = startUrl;
   } 
   
-  // useId gets populated after successful login
+  // userId and requestId gets populated after successful login
   var user = url.searchParams.get("userId");
-  if (user) {
+  var requestId = url.searchParams.get("requestId");
+  if (user && requestId) {
     document.getElementById("END").value = url.search;
     localStorage.setItem("MS_ADAPTER_LOGIN_RESULT", url.search)
     microsoftTeams.authentication.notifySuccess("success");
+    window.close();
   }  
   
 </script>
