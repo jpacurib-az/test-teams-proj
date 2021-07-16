@@ -29,9 +29,9 @@
   } 
   
   // userId and requestId gets populated after successful login
-  var user = url.searchParams.get("userId");
+  var userId = url.searchParams.get("userId");
   var requestId = url.searchParams.get("requestId");
-  if (user && requestId) {
+  if (userId && requestId) {
     document.getElementById("END").value = url.search;
     
     var data = [];
