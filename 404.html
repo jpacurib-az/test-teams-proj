@@ -34,11 +34,8 @@
   if (userId && requestId) {
     document.getElementById("END").value = url.search;
     
-    var data = [];
-    data["userId"] = userId;
-    data["requestId"] = requestId;
-    
-    localStorage.setItem("MS_ADAPTER_LOGIN_RESULT", data)
+    localStorage.setItem("MS_ADAPTER_LOGIN_RESULT.USER_ID", userId);
+    localStorage.setItem("MS_ADAPTER_LOGIN_RESULT.REQUEST_ID", requestId);
     microsoftTeams.authentication.notifySuccess("success");
     window.close();
   }  
