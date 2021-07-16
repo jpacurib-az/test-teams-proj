@@ -33,7 +33,12 @@
   var requestId = url.searchParams.get("requestId");
   if (user && requestId) {
     document.getElementById("END").value = url.search;
-    localStorage.setItem("MS_ADAPTER_LOGIN_RESULT", url.search)
+    
+    var data = [];
+    data["userId"] = userId;
+    data["requestId"] = requestId;
+    
+    localStorage.setItem("MS_ADAPTER_LOGIN_RESULT", data)
     microsoftTeams.authentication.notifySuccess("success");
     window.close();
   }  
