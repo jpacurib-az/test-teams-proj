@@ -70,8 +70,12 @@
     
     function grabResult(result) {
       console.log(result);
-      var loginResult = localStorage.getItem("MS_ADAPTER_LOGIN_RESULT");
-      document.getElementById("RESULT").value = loginResult;
+      var data = localStorage.getItem("MS_ADAPTER_LOGIN_RESULT");
+      var result = "userId: " + data["userId"] 
+                 + "\n"
+                 + "requestId: " + data["requestId"];
+      
+      document.getElementById("RESULT").value = result;
       localStorage.clear("MS_ADAPTER_LOGIN_RESULT");
     }
     
