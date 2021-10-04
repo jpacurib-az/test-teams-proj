@@ -44,7 +44,7 @@
       document.getElementById("LOGIN_URL").value = sampleUrl;      
       
       microsoftTeams.getContext(function(ctx) {              
-        document.getElementById("TEAMS_CONTEXT").value = JSON.stringify(ctx);
+        document.getElementById("TEAMS_CONTEXT").value = JSON.stringify(ctx, null, 2);
       });
     }
 	
