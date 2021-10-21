@@ -7,31 +7,45 @@
   
   <title>Test Teams</title> 
   <style type="text/css">
+    span.version {
+      font-weight: bold;
+    }
+    
     textarea {
-	  width: 80%;
+	    width: 80%;
+    }
+    
+    div.hidden {
+      display: none;
     }
   </style>
 </head>
 
 <body>
-  <textarea id="LOGIN_URL" placeholder="Login URL" rows="5"></textarea>
-  <br/>
-  <button onclick="doLoginNormal()">Login Normal</button>
-  <button onclick="doLoginTeamsSdk()">Login with Teams SDK</button>
-  <br/>
-  <br/>
-  <textarea id="RESULT" placeholder="Login Result" rows="5"></textarea>
-  <br/>  
-  <br/>
-  <textarea id="JS_CODE" placeholder="JS Code" rows="7"></textarea>
-  <br/>
-  <button onclick="execCode()">Execute Code</button>
-  <br/>
+  <span class="version">1.9</span>
   
-  1.8
-  <br/>
-  <textarea id="TEAMS_CONTEXT" placeholder="Teams Context" rows="15"></textarea>
-  <br/>
+  <div id="STATE.ADD_TO_MTG" class="hidden"> 
+    Add POC Meetings Ext to meeting?
+  </div>
+  
+  <div ID="STATE.NONE" class="hidden">
+    <textarea id="TEAMS_CONTEXT" placeholder="Teams Context" rows="15"></textarea>  
+    <br/>    
+    <br/>
+    <textarea id="LOGIN_URL" placeholder="Login URL" rows="5"></textarea>
+    <br/>
+    <button onclick="doLoginNormal()">Login Normal</button>
+    <button onclick="doLoginTeamsSdk()">Login with Teams SDK</button>
+    <br/>
+    <br/>
+    <textarea id="RESULT" placeholder="Login Result" rows="5"></textarea>
+    <br/>  
+    <br/>
+    <textarea id="JS_CODE" placeholder="JS Code" rows="7"></textarea>
+    <br/>
+    <button onclick="execCode()">Execute Code</button>    
+  </div>
+  
 </body>
   
   <script src="https://statics.teams.microsoft.com/sdk/v1.5.2/js/MicrosoftTeams.min.js" crossorigin="anonymous"></script>  
@@ -40,12 +54,34 @@
 	
     function init() {
       microsoftTeams.initialize();	
-      var sampleUrl = "https://login.microsoftonline.com/64e0e568-dc64-419f-958f-82e4565a24da/oauth2/v2.0/authorize?login_hint=jaysonne_pacurib%40azeusdeveloper.onmicrosoft.com&scope=openid+profile+offline_access+User.Read+Sites.ReadWrite.All+Files.ReadWrite.All+Calendars.ReadWrite+OnlineMeetings.ReadWrite&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2F1.0%2Fapi%2Faccept-auth&state=%7B%22requestId%22%3A%22U001-001-002%22%2C%22componentId%22%3A%22json-test-app%22%2C%22userId%22%3A%22842a7b94-0c01-403f-a347-6181382854f4%22%2C%22redirectUri%22%3A%22https%3A%2F%2Fjpacurib-az.github.io%2Ftest-teams-proj%2F404.html%22%7D&nonce=c7d30cdd-6353-4a3a-9deb-f22a8c7805cb&client_id=66af5ea4-f904-4597-9e96-92eff924ba00&response_mode=query";	
-      document.getElementById("LOGIN_URL").value = sampleUrl;      
+      
+      var globalUrl = new URL(window.location.href);
+      var state = globalUrl.searchParams.get("state");
+      
+      if (state === "add_to_mtg") {
+        microsoftTeams.settings.registerOnSaveHandler(function(saveEvent) {
+          var url = "https://jpacurib-az.github.io/test-teams-proj";
+          microsoftTeams.settings.setSettings({
+            "suggestedDisplayName": "Meeting app",
+            "entityId": "Test",
+            "contentUrl": url,
+            "websiteUrl": url
+          });        
+          saveEvent.notifySuccess();        
+        });
+        
+        microsoftTeams.settings.setValidityState(true);
+        document.getElementById("STATE.ADD_TO_MTG").classList.remove("hidden");
+        return;
+      }
       
       microsoftTeams.getContext(function(ctx) {              
         document.getElementById("TEAMS_CONTEXT").value = JSON.stringify(ctx, null, 2);
       });
+      
+      var sampleUrl = "https://login.microsoftonline.com/64e0e568-dc64-419f-958f-82e4565a24da/oauth2/v2.0/authorize?login_hint=jaysonne_pacurib%40azeusdeveloper.onmicrosoft.com&scope=openid+profile+offline_access+User.Read+Sites.ReadWrite.All+Files.ReadWrite.All+Calendars.ReadWrite+OnlineMeetings.ReadWrite&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2F1.0%2Fapi%2Faccept-auth&state=%7B%22requestId%22%3A%22U001-001-002%22%2C%22componentId%22%3A%22json-test-app%22%2C%22userId%22%3A%22842a7b94-0c01-403f-a347-6181382854f4%22%2C%22redirectUri%22%3A%22https%3A%2F%2Fjpacurib-az.github.io%2Ftest-teams-proj%2F404.html%22%7D&nonce=c7d30cdd-6353-4a3a-9deb-f22a8c7805cb&client_id=66af5ea4-f904-4597-9e96-92eff924ba00&response_mode=query";	
+      document.getElementById("LOGIN_URL").value = sampleUrl;
+      document.getElementById("STATE.NONE").classList.remove("hidden");
     }
 	
     function doLoginNormal() {
