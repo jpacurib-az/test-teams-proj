@@ -38,8 +38,11 @@
     <button onclick="doLoginTeamsSdk()">Login with Teams SDK</button>
     <br/>
     <br/>
-    <textarea id="RESULT" placeholder="Login Result" rows="5"></textarea>
+    <textarea id="RESULT" placeholder="Login Result" rows="1"></textarea>
     <br/>  
+    <br/>  
+    <textarea id="USER_TOKEN" placeholder="User Token" rows="5"></textarea>
+    <br/>
     <br/>
     <textarea id="JS_CODE" placeholder="JS Code" rows="7"></textarea>
     <br/>
@@ -53,7 +56,8 @@
   <script type="text/javascript">   
   
     function init() {
-      microsoftTeams.initialize();  
+      microsoftTeams.initialize();      
+      doSSO();
       
       var globalUrl = new URL(window.location.href);
       var state = globalUrl.searchParams.get("state");
@@ -67,7 +71,7 @@
             "contentUrl": url,
             "websiteUrl": url
           });        
-          saveEvent.notifySuccess();        
+          saveEvent.notifySuccess();
         });
         
         microsoftTeams.settings.setValidityState(true);
@@ -82,6 +86,18 @@
       var sampleUrl = "https://login.microsoftonline.com/64e0e568-dc64-419f-958f-82e4565a24da/oauth2/v2.0/authorize?login_hint=jaysonne_pacurib%40azeusdeveloper.onmicrosoft.com&scope=openid+profile+offline_access+User.Read+Sites.ReadWrite.All+Files.ReadWrite.All+Calendars.ReadWrite+OnlineMeetings.ReadWrite&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2F1.0%2Fapi%2Faccept-auth&state=%7B%22requestId%22%3A%22U001-001-002%22%2C%22componentId%22%3A%22json-test-app%22%2C%22userId%22%3A%22842a7b94-0c01-403f-a347-6181382854f4%22%2C%22redirectUri%22%3A%22https%3A%2F%2Fjpacurib-az.github.io%2Ftest-teams-proj%2F404.html%22%7D&nonce=c7d30cdd-6353-4a3a-9deb-f22a8c7805cb&client_id=66af5ea4-f904-4597-9e96-92eff924ba00&response_mode=query";  
       document.getElementById("LOGIN_URL").value = sampleUrl;
       document.getElementById("STATE.NONE").classList.remove("hidden");
+    }
+    
+    function doSSO() {
+      var authTokenRequest = {
+        successCallback: function(result) {           
+          document.getElementById("USER_TOKEN").value = result;
+        },
+        failureCallback: function(error) {           
+          document.getElementById("USER_TOKEN").value = error;
+        }
+      };
+      microsoftTeams.authentication.getAuthToken(authTokenRequest);
     }
   
     function doLoginNormal() {
