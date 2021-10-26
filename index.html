@@ -22,7 +22,7 @@
 </head>
 
 <body>
-  <span class="version">2.0</span>
+  <span class="version">2.1</span>
   
   <div id="STATE.ADD_TO_MTG" class="hidden"> 
     Add POC Meetings Ext to meeting?
@@ -78,7 +78,9 @@
           saveEvent.notifySuccess();
         });
         
-        microsoftTeams.settings.setValidityState(true);
+        microsoftTeams.appInitialization.notifySuccess();
+        microsoftTeams.settings.setValidityState(true);        
+        
         document.getElementById("STATE.ADD_TO_MTG").classList.remove("hidden");
         return;
       }
